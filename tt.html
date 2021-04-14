@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>tt</title>
+	<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+	<canvas id="canvas" width="1000px" height="600px" style="border:1px solid black"></canvas>
+</body>
+<script>
+	$.ajax({
+		url:'ss.json',
+		type:'get',
+		dataType:'json',
+		success:function(d){
+			console.log(d)
+			var c=document.getElementById('canvas');
+			var ctx=c.getContext('2d');
+			$.each(d,function(index,item){
+
+
+			//绘制折线
+			if(index<d.length-1){
+				ctx.beginPath()
+				ctx.moveTo(50+80*index,300-(item.yy-d[0].yy)*0.5)
+				ctx.lineTo(50+80*(index+1),300-(d[index+1].yy-d[0].yy)*0.5)
+				ctx.lineWidth=2
+				ctx.strokeStyle='red'
+				ctx.stroke()
+			}
+				
+
+			//绘制中国金牌的圆，首先确定第一个圆的圆心(50,300)
+			ctx.beginPath()
+			ctx.arc(50+80*index,300-(item.yy-d[0].yy)*0.5,5,0,Math.PI*2)
+			ctx.strokeStyle="red"
+			ctx.fillStyle='#fff'
+			ctx.fill()
+			ctx.stroke()
+			ctx.closePath()
+
+			//绘制文字
+			ctx.beginPath()
+			ctx.textAlign='center'
+			ctx.fillStyle='black'
+			ctx.font='16px 宋体'
+			ctx.fillText(item.yy,50+80*index,300-(item.yy-d[0].yy)*0.5-10)
+			ctx.fillText(item.ss,50+80*index,300-(item.ss-d[0].yy)*0.5-10)
+			ctx.closePath()
+
+
+			//美国奖牌数
+			if(index<d.length-1){
+				ctx.beginPath()
+				ctx.moveTo(50+80*index,300-(item.ss-d[0].yy)*0.5)
+				ctx.lineTo(50+80*(index+1),300-(d[index+1].ss-d[0].yy)*0.5)
+				ctx.strokeStyle='blue'
+				ctx.lineWidth=2
+				ctx.stroke()
+			}
+
+
+			//画圆
+			ctx.beginPath()
+			ctx.arc(50+80*index,300-(item.ss-d[0].yy)*0.5,5,0,Math.PI*2)
+			ctx.fillStyle='#fff'
+			ctx.fill()
+			ctx.strokeStyle='blue'
+			ctx.lineWidth=2
+			ctx.stroke()
+
+			})
+
+
+			//写字
+			// ctx.beginPath()
+			// ctx.textAlign='center'
+			// ctx.fillStyle='black'
+			// ctx.font='16px 宋体'
+			// ctx.fillText(item.usa,50+80*index,300-(item.usa-d[0].china)*3-10)
+			// ctx.closePath()
+		}
+	})
+</script>
+</html>
